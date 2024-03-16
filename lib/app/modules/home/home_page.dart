@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:test_mobile_itae/app/core/values/spaces.dart';
 import 'package:test_mobile_itae/app/core/values/text_styles.dart';
 import 'package:test_mobile_itae/app/modules/home/local_widgets/task_item.dart';
 import 'package:test_mobile_itae/app/modules/home/local_widgets/tasks_filters.dart';
+import 'package:test_mobile_itae/app/routes/app_routes.dart';
 import 'package:test_mobile_itae/app/ui/global_widgets/custom_appbar.dart';
 import 'package:test_mobile_itae/app/ui/global_widgets/custom_progress.dart';
 
@@ -15,13 +15,12 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final responsive = Responsive.of(context);
     return GetBuilder<HomeController>(
         builder: (_) => SafeArea(
               child: Scaffold(
                 appBar: const CustomAppBar(titulo: 'Lista de tareas'),
                 floatingActionButton: FloatingActionButton(
-                  onPressed: () {},
+                  onPressed: () => Get.toNamed(AppRoutes.form),
                   heroTag: 'add',
                   child: const Icon(
                     Icons.add,
@@ -43,7 +42,7 @@ class HomePage extends StatelessWidget {
                         const TaskFilter(),
                         Expanded(
                           child: RefreshIndicator(
-                            onRefresh: () => _.loadList(),
+                            onRefresh: () => _.refreshList(),
                             child: ListView.builder(
                                 physics: const BouncingScrollPhysics(),
                                 shrinkWrap: true,

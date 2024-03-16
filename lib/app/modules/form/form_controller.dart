@@ -1,10 +1,10 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:test_mobile_itae/app/data/local/preference_manager.dart';
 import 'package:test_mobile_itae/app/data/model/task_model.dart';
+import 'package:test_mobile_itae/app/modules/home/home_controller.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../core/values/text_styles.dart';
 import '../../theme/app_colors.dart';
@@ -31,7 +31,7 @@ class FormController extends GetxController {
     'Prioridad 9',
     'Prioridad 10'
   ];
-  final defaulPriority = 'Prioridad 1';
+  String initialPriority = 'Prioridad 1';
   @override
   void onReady() {
     super.onReady();
@@ -42,6 +42,7 @@ class FormController extends GetxController {
     final args = Get.arguments;
     if (args != null) {
       taskToSave = TaskModel.fromJson(args);
+      initialPriority = _translatePriorityToSpanish(taskToSave!.priority);
     }
     initForm();
     update();
@@ -66,7 +67,7 @@ class FormController extends GetxController {
       'priority': FormControl(
         value: taskToSave?.priority != null
             ? _translatePriorityToSpanish(taskToSave!.priority)
-            : defaulPriority,
+            : initialPriority,
         validators: [
           Validators.required,
         ],
@@ -80,23 +81,27 @@ class FormController extends GetxController {
 
   Future<void> submit() async {
     form!.markAllAsTouched();
-
     if (form!.invalid) return;
 
     isProcess.value = true;
-
     final data = TaskModel(
         title: title,
         description: description,
-        priority: priority,
-        id: taskToSave?.id ?? Random().nextInt(9999).toString());
+        priority: _translatePriorityToEnglish(priority),
+        id: taskToSave?.id ?? const Uuid().v4());
 
     List<TaskModel> task = await _preferenceManager.getTasks();
-    task = [...task, data];
-
+    task = [data, ...task.where((e) => e.id != data.id)];
     await _preferenceManager.setTasks([...task]);
 
     isProcess.value = false;
+    _updateAndNotify(task);
+  }
+
+  _updateAndNotify(List<TaskModel> task) {
+    final homeController = Get.find<HomeController>();
+    homeController.tasks = [...task];
+    homeController.update();
     Get.back();
 
     ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(

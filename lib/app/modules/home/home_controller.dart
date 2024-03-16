@@ -9,7 +9,7 @@ import 'package:test_mobile_itae/app/theme/app_colors.dart';
 import '../../data/local/preference_manager.dart';
 import '../../data/repository/mockup_repository.dart';
 
-class HomeController extends GetxController {
+class HomeController extends GetxController with WidgetsBindingObserver {
   final MockupRepository _repository = Get.find<MockupRepository>();
   final PreferenceManager _preferenceManager = Get.find<PreferenceManager>();
 
@@ -35,6 +35,7 @@ class HomeController extends GetxController {
   Future<void> loadList() async {
     try {
       isLoading.value = true;
+
       tasks = await _repository.getTasks();
 
       update();
@@ -52,6 +53,12 @@ class HomeController extends GetxController {
         backgroundColor: AppColors.errorColor,
       ));
     }
+  }
+
+  Future<void> refreshList() async {
+    await _preferenceManager.clear();
+    await loadList();
+    await _preferenceManager.setTasks(tasks);
   }
 
   Future<void> changeFilter(String? priorityValue) async {
@@ -86,21 +93,14 @@ class HomeController extends GetxController {
     return _isLowPriority(priorityValue);
   }
 
-  // categorized the priority value to high/ medium / low
-  bool _isHighPriority(String prioriry) => ["1", "2", "3"].contains(prioriry);
-  bool _isMediumPriority(String prioriry) =>
-      ["4", "5", "6", "7"].contains(prioriry);
-  bool _isLowPriority(String prioriry) => ["8", "9", "10"].contains(prioriry);
-
-  Future<void> deleteTask(TaskModel task) async {
-    // TODO: Mover a servicio global
+  Future<void> confirmToDeleteTask(TaskModel task) async {
     final resp = await Get.defaultDialog(
       title: "Confirmación",
       middleText: "¿Estás seguro de continuar?",
       actions: [
         TextButton(
           onPressed: () {
-            Get.back(result: false); // Usuario no está seguro
+            Get.back(result: false);
           },
           child: Text(
             "No",
@@ -110,7 +110,7 @@ class HomeController extends GetxController {
         ),
         TextButton(
           onPressed: () {
-            Get.back(result: true); // Usuario está seguro
+            Get.back(result: true);
           },
           child: Text(
             "Sí",
@@ -128,6 +128,10 @@ class HomeController extends GetxController {
 
     if (resp < 1) return;
 
+    await deleteTask(task);
+  }
+
+  Future<void> deleteTask(TaskModel task) async {
     isLoading.value = true;
     List<TaskModel> originalList = await _preferenceManager.getTasks();
 
@@ -146,4 +150,10 @@ class HomeController extends GetxController {
       backgroundColor: AppColors.sucessColor,
     ));
   }
+
+  // categorized the priority value to high/ medium / low
+  bool _isHighPriority(String prioriry) => ["1", "2", "3"].contains(prioriry);
+  bool _isMediumPriority(String prioriry) =>
+      ["4", "5", "6", "7"].contains(prioriry);
+  bool _isLowPriority(String prioriry) => ["8", "9", "10"].contains(prioriry);
 }

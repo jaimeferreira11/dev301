@@ -62,7 +62,7 @@ class TaskItem extends StatelessWidget {
                   Icons.delete,
                   color: Colors.white,
                 ),
-                onPressed: () => controller.deleteTask(task),
+                onPressed: () => controller.confirmToDeleteTask(task),
               ),
             )
           ],

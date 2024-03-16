@@ -1,16 +1,28 @@
-# test_mobile_itae
+# Prueba técnica ITAE
 
-A new Flutter project.
+Proyecto relizado con Flutter sdk 3.19.3 en entorno Android.
 
-## Getting Started
+## IDE utilizado
+- VS Code
 
-This project is a starting point for a Flutter application.
+## Pasos para la ejecucion en entorno de desarrollo.
 
-A few resources to get you started if this is your first Flutter project:
+1. Descargar los cambios del respositorio
+```
+git pull origin main
+```
+2. Posicionarte en la rama `feature/dev301`
+```
+git checkout feature/dev301
+```
+3. Ejecutar desde la linea de comando o desde el IDE, para instalar las nuevas dependencias
+```
+fluter pub get 
+```
+4. Seleccionar el dispositivo android donde se va ejecutar la aplicación (Emulador o dispositivo físico)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+5. Ejecutar mediante el IDE o desde la terminal con el commando
+```
+flutter run
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.

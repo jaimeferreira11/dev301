@@ -106,7 +106,7 @@ class FormPage extends StatelessWidget {
                                     height: MySpaces.marginHorizontal2(context),
                                   ),
                                   DropdownButtonFormField<String>(
-                                    value: _.defaulPriority,
+                                    value: _.initialPriority,
                                     items: _.priorities
                                         .map<DropdownMenuItem<String>>(
                                             (String value) {
