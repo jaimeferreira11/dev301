@@ -26,3 +26,13 @@ fluter pub get
 flutter run
 ```
 
+
+## Herramientas utilizadas
+- [Getx](https://pub.dev/packages/get): Manejador de estados y mas
+- [Dio](https://pub.dev/packages/dio): Cliente http
+- [Google fonts](https://pub.dev/packages/google_fonts): Fuentes
+- [Reactive Forms](https://pub.dev/packages/reactive_forms): Manejo de formularios reactivos
+- [Shared preferences](https://pub.dev/packages/shared_preferences): Persistencia de datos en el dispositivo
+- [Uuid](https://pub.dev/packages/uuid): Para generar Ids unidos
+
+
