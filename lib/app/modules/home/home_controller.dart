@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,10 +6,12 @@ import 'package:test_mobile_itae/app/core/values/text_styles.dart';
 import 'package:test_mobile_itae/app/data/model/task_model.dart';
 import 'package:test_mobile_itae/app/theme/app_colors.dart';
 
+import '../../data/local/preference_manager.dart';
 import '../../data/repository/mockup_repository.dart';
 
 class HomeController extends GetxController {
   final MockupRepository _repository = Get.find<MockupRepository>();
+  final PreferenceManager _preferenceManager = Get.find<PreferenceManager>();
 
   late SharedPreferences prefs;
 
@@ -29,7 +29,7 @@ class HomeController extends GetxController {
   Future<void> _init() async {
     prefs = await SharedPreferences.getInstance();
     await loadList();
-    await saveListInLocalStorage(tasks);
+    await _preferenceManager.setTasks(tasks);
   }
 
   Future<void> loadList() async {
@@ -54,19 +54,6 @@ class HomeController extends GetxController {
     }
   }
 
-// TODO: Move to local repository
-  Future<void> saveListInLocalStorage(List<TaskModel> list) async {
-    final jsonList = list.map((item) => item.toJson()).toList();
-    await prefs.setString('tasks', jsonEncode(jsonList));
-  }
-
-  Future<List<TaskModel>> getTaskListFromLocalStorage() async {
-    final jsonString = prefs.getString('tasks');
-    if (jsonString == null) return [];
-
-    return TaskModel.fromJsonList(jsonDecode(jsonString));
-  }
-
   Future<void> changeFilter(String? priorityValue) async {
     if (priorityValue == null) return;
 
@@ -76,7 +63,7 @@ class HomeController extends GetxController {
 
     await Future.delayed(const Duration(milliseconds: 500)); // simulate  delay
 
-    List<TaskModel> originalList = await getTaskListFromLocalStorage();
+    List<TaskModel> originalList = await _preferenceManager.getTasks();
     if (priorityValue == 'all') {
       tasks = originalList;
     } else {
@@ -141,15 +128,22 @@ class HomeController extends GetxController {
 
     if (resp < 1) return;
 
-// borrar
     isLoading.value = true;
-    List<TaskModel> originalList = await getTaskListFromLocalStorage();
+    List<TaskModel> originalList = await _preferenceManager.getTasks();
 
     originalList.removeWhere((element) => element.id == task.id);
 
-    await saveListInLocalStorage(originalList);
+    await _preferenceManager.setTasks(originalList);
     await changeFilter(filterBy);
 
     isLoading.value = false;
+
+    ScaffoldMessenger.of(Get.context!).showSnackBar(SnackBar(
+      content: Text(
+        'Eliminado con exito',
+        style: MyTextStyles.title(Get.context!),
+      ),
+      backgroundColor: AppColors.sucessColor,
+    ));
   }
 }

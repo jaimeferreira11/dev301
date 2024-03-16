@@ -144,6 +144,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
+  intl:
+    dependency: transitive
+    description:
+      name: intl
+      sha256: d6f56758b7d3014a48af9701c085700aac781a92a87a62b1333b46d8879661cf
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.19.0"
   leak_tracker:
     dependency: transitive
     description:
@@ -272,6 +280,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.8"
+  reactive_forms:
+    dependency: "direct main"
+    description:
+      name: reactive_forms
+      sha256: b7d64d8fe45c19f506c762e219f4c6a3bdcfc4842d6fba98f866be5fca75d8e5
+      url: "https://pub.dev"
+    source: hosted
+    version: "16.1.1"
   shared_preferences:
     dependency: "direct main"
     description:

@@ -4,6 +4,7 @@ import 'package:test_mobile_itae/app/core/values/spaces.dart';
 import 'package:test_mobile_itae/app/core/values/text_styles.dart';
 import 'package:test_mobile_itae/app/data/model/task_model.dart';
 import 'package:test_mobile_itae/app/modules/home/home_controller.dart';
+import 'package:test_mobile_itae/app/routes/app_routes.dart';
 import 'package:test_mobile_itae/app/theme/app_colors.dart';
 
 class TaskItem extends StatelessWidget {
@@ -46,7 +47,8 @@ class TaskItem extends StatelessWidget {
                   Icons.edit,
                   color: Colors.white,
                 ),
-                onPressed: () {},
+                onPressed: () =>
+                    Get.toNamed(AppRoutes.form, arguments: task.toJson()),
               ),
             ),
             SizedBox(

@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:test_mobile_itae/app/modules/form/form_binding.dart';
+import 'package:test_mobile_itae/app/modules/form/form_page.dart';
 import 'package:test_mobile_itae/app/modules/home/home_binding.dart';
 import 'package:test_mobile_itae/app/modules/home/home_page.dart';
 
@@ -16,9 +18,9 @@ class AppPages {
         name: AppRoutes.home,
         page: () => const HomePage(),
         binding: HomeBinding()),
-    // GetPage(
-    //     name: AppRoutes.form,
-    //     page: () => const RegisterPage(),
-    //     binding: RegisterBinding()),
+    GetPage(
+        name: AppRoutes.form,
+        page: () => const FormPage(),
+        binding: FormBinding()),
   ];
 }

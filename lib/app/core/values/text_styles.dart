@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_mobile_itae/app/core/utils/responsive.dart';
+import 'package:test_mobile_itae/app/theme/app_fonts.dart';
 
 class MyTextStyles {
   static TextStyle bigText(BuildContext context) => TextStyle(
@@ -18,6 +19,10 @@ class MyTextStyles {
 
   static TextStyle small(BuildContext context) => TextStyle(
         fontSize: Responsive.of(context).dp(1.4),
-        fontWeight: FontWeight.w600,
+        fontWeight: FontWeight.w400,
       );
+  static TextStyle button(BuildContext context) => TextStyle(
+      fontSize: Responsive.of(context).dp(2),
+      fontWeight: FontWeight.bold,
+      fontFamily: AppFonts.secondaryFont.fontFamily);
 }
